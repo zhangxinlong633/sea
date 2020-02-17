@@ -2,12 +2,12 @@ SHELL=/bin/sh
 # Where you want it installed when you do 'make install'
 PREFIX=/usr/local/
 
-CFLAGS = -I/usr/local/include #-O3 -march=native -mfpmath=sse
+CFLAGS = -I/usr/local/include -g #-O3 -march=native -mfpmath=sse
 
 LDFLAGS += -L/usr/local/lib
 
 
-TEST_LDFLAGS += -L/usr/local/lib  -l sea_block
+TEST_LDFLAGS += -L/usr/local/lib -g  -l sea_block
 
 all: libblock block_test 
 

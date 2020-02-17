@@ -2,13 +2,12 @@
 
 struct sea_block_offset {
     uint32_t count;
-    uint32_t write_pos;
     uint32_t size;
     uint32_t pad;
     uint64_t offset[0];
 };
 
-#define INCREMENT_SIZE 128
+#define INCREMENT_SIZE 1280
 struct sea_block_offset *sea_block_offset_malloc() 
 {
     int malloc_size = sizeof(struct sea_block_offset) + INCREMENT_SIZE * sizeof(uint64_t);
@@ -33,16 +32,18 @@ int sea_block_offset_append(struct sea_block_offset *header, uint64_t offset)
 {
     int ret = EINVAL;
 
-    if (header->write_pos >= header->count) {
+    if (header->count >= header->size) {
         int size = (header->size - sizeof(struct sea_block_offset)) * 2 + sizeof(struct sea_block_offset);
-        header = realloc(header, size);
+        void *new_header = realloc(header, size);
+        header = new_header;
+        printf("header: %p\n", header);
         if (header == NULL) {
             goto exit;
         }
-        header->count *= 2;
+        header->size *= 2;
     }
 
-    header->offset[header->write_pos++] = offset;
+    header->offset[header->count++] = offset;
     ret = 0;
 
 exit:

@@ -4,10 +4,10 @@ int make_sub_dir(char *dir, uint64_t block_id)
 {
 	char dirname[PATH_MAX] = {0};
 
-	snprintf(dirname, PATH_MAX, "/%s/%llu", dir, block_id);
- 	mkdir(dirname, S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
-
-	return 0;
+	snprintf(dirname, PATH_MAX, "%s/%llu", dir, block_id);
+ 	int ret = mkdir(dirname, S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
+ 	printf("ret: %d, errno: %d\n", ret, errno);
+	return ret;
 }
 
 uint64_t get_current_mills()

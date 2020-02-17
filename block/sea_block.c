@@ -90,16 +90,12 @@ int sea_block_append(struct sea_block *block, void *data, int length, uint32_t *
 
 	uint64_t offset = 0;
 	ret = sea_block_data_append(block->data, data, length, overlimit, &offset);
-	if (ret == 0) {
-		ret = ENOENT;
+	if (ret != 0) {
 		goto exit;
 	}
 
-    uint32_t rest_count = 0;
-	ret = sea_block_index_append(block->index, offset, record_id, &rest_count);
-	if (rest_count == 0) {
-		*overlimit = 1;
-		ret = ENOENT;
+	ret = sea_block_index_append(block->index, offset, record_id, overlimit);
+	if (ret != 0) {
 		goto exit;
 	} 
 

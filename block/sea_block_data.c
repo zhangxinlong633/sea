@@ -136,7 +136,7 @@ int sea_block_data_append(struct sea_block_data *data, void *buffer, uint32_t le
 
     *offset = lseek(data->fd, 0, SEEK_END);
     uint32_t size = write(data->fd, buf, buf_len);
-    if (size != length) {
+    if (size != buf_len) {
         ret = ENOENT;
         goto exit;
     }
@@ -167,7 +167,7 @@ struct sea_block_record *sea_block_data_query_by_offsets(struct sea_block_data *
             goto exit;
         }
 
-        size = read(data->fd, &header, header.length);
+        size = read(data->fd, buf, header.length);
         if (size != header.length) {
             goto exit;
         }

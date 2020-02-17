@@ -51,7 +51,7 @@ int sea_block_index_create(char *dir, uint64_t block_id, uint64_t max_count)
     make_sub_dir(dir, block_id);
     sea_block_index_filename(dir, block_id, filename, PATH_MAX);
     
-    fd = open(filename, O_RDWR, 00755);
+    fd = open(filename, O_RDWR | O_CREAT, 00755);
     if (fd == -1) {
         ret = errno;
         DEBUGP("%s: open fail, filename: %s, fd: %u\n", __func__, index_filename, fd);
@@ -126,6 +126,7 @@ struct sea_block_index *sea_block_index_open(char *dir, uint64_t block_id, int *
     }
 
     memcpy(&index->header, &header, sizeof(struct sea_block_index_header));
+    index->fd = fd;
     ret = 0;
 
    
@@ -151,7 +152,7 @@ void sea_block_index_close(struct sea_block_index *index)
 }
 
 
-int sea_block_index_append(struct sea_block_index *index, uint64_t offset, uint32_t *record_id, uint32_t *rest_count)
+int sea_block_index_append(struct sea_block_index *index, uint64_t offset, uint32_t *record_id, int *overlimit)
 {
     int ret = EINVAL;
     int size = 0;
@@ -163,14 +164,13 @@ int sea_block_index_append(struct sea_block_index *index, uint64_t offset, uint3
     *record_id = index->header.count;
     index->header.count ++;
     index->header.stop_timestamp = entry.timestamp;
-    if (index->header.count > index->header.max_count) {
-        *rest_count = 0;
-        goto exit;
+    if (index->header.count >= index->header.max_count) {
+        *overlimit = 1;
     } else {
-        *rest_count = index->header.max_count - index->header.count;
+        *overlimit = 0;
     }
 
-    lseek(index->fd, offset, SEEK_END);  
+    lseek(index->fd, 0, SEEK_END);
     size = write(index->fd, &entry, SEA_BLOCK_INDEX_ENTRY_SIZE);
     if (size != SEA_BLOCK_INDEX_ENTRY_SIZE) {
         goto exit;
