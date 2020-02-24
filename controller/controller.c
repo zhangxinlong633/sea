@@ -11,12 +11,6 @@ int get_ip_list(uint64_t block_id, uint32_t *ip_list, int ip_list_len, int *ret_
 		goto exit;
 	}
 
-	/* 2. find neibour_list */
-	ret = neighbour_list_get(block_id, ip_list, ip_list_len, ret_ip_len);
-	if (ret == 0 && ip[0] != 0) {
-		goto exit;
-	}
-
 	/*3. find gossip */
 	ret = gossip_list_get(block_id, ip_list, ip_list_len, ret_ip_len);
 	if (ret == 0 && ip[0] != 0) {
