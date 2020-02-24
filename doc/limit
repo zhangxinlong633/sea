@@ -1,0 +1,3 @@
+1. phone_list 800万个结点可以访问1PB字节的数据, 一个结点128字节，800节点需要1GB内存空间
+2. neighbour_list 
+3. gossip_list  会随机找机器问
