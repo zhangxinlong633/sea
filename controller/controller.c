@@ -1,7 +1,36 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "../include/public.h"
 
-int get_ip_list(uint64_t block_id, uint32_t *ip_list, int ip_list_len, int *ret_ip_len)
+#define SEA_CONTROLLER_LOCAL_NODE 0
+
+struct sea_controller {
+	uint64_t block_id;
+	struct sea_block *block;
+	struct phone_list *phone_list;
+};
+
+struct sea_controller *sea_controller_create()
+{
+	struct sea_controller *controller = malloc(sizeof(struct sea_controller));
+	if (controller == NULL) {
+		goto exit;
+	}
+
+	controller->block_id = time(NULL);
+	controller->block = NULL;
+	controller->phone_list = phone_list_create(3);
+
+exit:
+	return controller;
+}
+
+void sea_controller_destroy(struct sea_controller *controller)
+{
+	free(controller);	
+}
+
+static int sea_controller_get_ip_list(uint64_t block_id, uint32_t *ip_list, int ip_list_len, int *ret_ip_len)
 {
 	int ret = EINVAL;
 
@@ -12,16 +41,37 @@ int get_ip_list(uint64_t block_id, uint32_t *ip_list, int ip_list_len, int *ret_
 	}
 
 	/*3. find gossip */
-	ret = gossip_list_get(block_id, ip_list, ip_list_len, ret_ip_len);
+	/*ret = gossip_list_get(block_id, ip_list, ip_list_len, ret_ip_len);
 	if (ret == 0 && ip[0] != 0) {
 		goto exit;
-	}
+	}*/
 
 exit:
 	return ret;
 }
 
-int read(uint64_t block_id, uint32_t record_id, char *buf, int buf_len, int *ret_buf_len)
+int sea_controller_read_from_local(uint64_t block_id, uint32_t record_id, char *buf, int buf_len, int *ret_buf_len)
+{
+	int ret = EINVAL;
+	struct sea_block *block = sea_block_open(DATA_DIR, block_id);
+	if (block == NULL) {
+		goto exit;
+	}
+
+	ret = sea_block_query_by_record_id(block, record_id, buf, buf_len, ret_buf_len);
+	if (ret == 0 && ret_buf_len != 0) {
+		goto exit;	
+	}
+
+exit:
+
+	if (block != NULL) {
+		sea_block_close(block);
+	}
+	return ret;
+}
+
+int sea_controller_read(struct sea_controller *controller, uint64_t block_id, uint32_t record_id, char *buf, int buf_len, int *ret_buf_len)
 {
 	int ret = EINVAL;
 	uint32_t ip_list[16] = {0};
@@ -32,7 +82,9 @@ int read(uint64_t block_id, uint32_t record_id, char *buf, int buf_len, int *ret
 		goto exit;
 	}
 
-	uint8_t local_flag = pick_ip_local(ip_list, ip_list_len);
+	ret = sea_controller_read_from_local(block_id, record_id, buf, buf_len, ret_buf_len);
+
+	/*uint8_t local_flag = pick_ip_local(ip_list, ip_list_len);
 	if (local_flag) {
 		// 本地ip, 直接读数据返回，不需要再次建立链接	
 		ret = read_from_local(block_id, record_id, buf, buf_len, ret_buf_len);
@@ -48,53 +100,54 @@ int read(uint64_t block_id, uint32_t record_id, char *buf, int buf_len, int *ret
 		if (ret == 0 || ret_buf_len != 0) {
 			goto exit;	
 		}
-	}
+	} */
 
 exit:
 	return ret;
 }
 
-struct alloc_block_entry {
-	uint64_t block_id;
-	uint64_t size;
-	uint64_t count;
-}
-
-int write_local(char *buf, int buf_len, uint64_t *block_id, uint32_t *record_id)
+int sea_controller_write_local(struct sea_controller *controller, char *buf, int buf_len, uint64_t *block_id, uint32_t *record_id)
 {
 	int ret = EINVAL;
 
-	struct alloc_block_entry *block = pick_block();
-	if (block == NULL) {
-		ret = ENOENT;
-		goto exit;
+	*block_id = controller->block_id;
+
+	if (controller->block == NULL) {
+		sea_block_create(DATA_DIR, controller->block_id, MAX_SIZE, MAX_COUNT);
+		controller->block = sea_block_open(DATA_DIR, controller->block_id);
 	}
 
 	uint8_t overlimit = 0;
-	ret = block_append(block_id, buf, buf_len, &record_id, &overlimit);
-	if (ret == 0) {
-		block->size += buf_len;
-		block->count ++;
-		if (overlimit) {
-			pop_block_id(block_id);
-			enqueue_block_id_in_replication_list(block_id);
-		}
-	}
-
-exit:
-	return ret;
-}
-
-int write(char *buf, int buf_len, uint64_t *block_id, uint32_t *record_id)
-{
-	int ret = EINVAL;
-
-	ret = write_local(buf, buf_len, block_id, record_id);
+	ret = sea_block_append(controller->block, buf, buf_len, record_id, &overlimit);
 	if (ret != 0) {
 		goto exit;
 	}
 
-	int remote_count = 0;
+	phone_list_put(block_id, 0);
+
+	uint32_t node = SEA_CONTROLLER_LOCAL_NODE;
+	phone_list_put(controller->phone_list, controller->block_id, &node, 1);
+
+	if (overlimit) {
+		controller->block_id++;
+		sea_block_close(controller->block);
+		controller->block = NULL;
+	}
+
+exit:
+	return ret;
+}
+
+int sea_controller_write(struct sea_controller *controller, char *buf, int buf_len, uint64_t *block_id, uint32_t *record_id)
+{
+	int ret = EINVAL;
+
+	ret = sea_controller_write_local(controller, buf, buf_len, block_id, record_id);
+	if (ret != 0) {
+		goto exit;
+	}
+
+	/*int remote_count = 0;
 
 	uint32_t rmote_ip_list[16] = {0};
 
@@ -105,15 +158,19 @@ int write(char *buf, int buf_len, uint64_t *block_id, uint32_t *record_id)
 		if (ret == 0) {
 			break;
 		}
-	}
+	} */
 
 exit:
 	return ret;
 }
 
-int init(void)
+int sea_controller_init(void)
 {
-
+	return 0;
 }
 
+void sea_controller_fini(void)
+{
+	return;
+}
 

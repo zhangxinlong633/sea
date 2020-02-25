@@ -15,7 +15,7 @@ void sea_block_close(struct sea_block *block);
 int sea_block_append(struct sea_block *block, void *data, int length, uint32_t *record_id, int *overlimit);
 struct sea_block_record *sea_block_query_by_count(struct sea_block *block, uint32_t first_reocrd_id, uint32_t count, uint32_t *real_count);
 struct sea_block_record *sea_block_query_by_time(struct sea_block *block, uint64_t start, uint64_t stop, uint32_t first_reocrd_id, uint32_t count, uint32_t *real_count);
-struct sea_block_record *sea_block_query_by_record_id(struct sea_block *block, uint32_t record_id);
+int sea_block_query_by_record_id(struct sea_block *block, uint32_t record_id, void *buf, int buf_len, uint32_t *ret_buf_len);
 
 #endif
 

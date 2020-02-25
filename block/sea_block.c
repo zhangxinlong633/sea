@@ -143,8 +143,9 @@ exit:
 	return record_list;
 }
 
-struct sea_block_record *sea_block_query_by_record_id(struct sea_block *block, uint32_t record_id)
+int sea_block_query_by_record_id(struct sea_block *block, uint32_t record_id, void *buf, int buf_len, uint32_t *ret_buf_len)
 {
+	int ret = EINVAL;
 	struct sea_block_record *record_list = NULL;
 
 	struct sea_block_offset *offsets = sea_block_index_query_by_record_id(block->index, record_id);
@@ -153,12 +154,29 @@ struct sea_block_record *sea_block_query_by_record_id(struct sea_block *block, u
 	}
 
 	record_list = sea_block_data_query_by_offsets(block->data, offsets);
-	
+	if (record_list == NULL) {
+		goto exit;
+	}
+
+	uint32_t data_len = 0;  
+	void *data = sea_block_record_get_first(record_list, &data_len);
+
+	if (data_len > buf_len) {
+		ret = ENOENT;
+		goto exit;
+	}
+
+	memcpy(buf, data, data_len);
+	ret = 0;	
+
 exit:
 	if (offsets != NULL) {
 		sea_block_offset_free(offsets);
 	}
+	if (record_list != NULL) {
+		sea_block_record_free(record_list);
+	}
 
-	return record_list;
+	return ret;
 }
 

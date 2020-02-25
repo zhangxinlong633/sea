@@ -1,0 +1,3 @@
+/Users/zhangxinlong/数据之海/sea/block/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/zhangxinlong/数据之海/sea/block/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/zhangxinlong/数据之海/sea/block/cmake-build-debug/CMakeFiles/block.dir

@@ -69,3 +69,18 @@ int sea_block_record_foreach(struct sea_block_record *header, sea_block_record_f
 }
 
 
+void *sea_block_record_get_first(struct sea_block_record *header, uint32_t *length)
+{
+	struct sea_block_record_data *data = TAILQ_FIRST(&header->head);
+
+	if (data = NULL) {
+		return NULL;
+	}
+
+	*length = data->length;
+
+	return data->data;
+}
+
+
+
