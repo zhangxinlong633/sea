@@ -1,4 +1,5 @@
 #include "gossip_list.h"
+#include "../include/public.h"
 
 struct gossip_list {
 	uint32_t node_cap;
@@ -9,7 +10,7 @@ int gossip_list_init()
 	return 0;
 }
 
-int gossip_list_fini()
+void gossip_list_fini()
 {
 	return;
 }

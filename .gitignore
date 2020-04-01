@@ -1,0 +1,5 @@
+*.so
+*.a
+*.dylib
+cmake-build-debug
+.idea

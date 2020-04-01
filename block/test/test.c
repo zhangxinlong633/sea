@@ -60,9 +60,11 @@ int query_by_record_id_test()
     char *dir = "/Users/zhangxinlong/tmp/data";
     uint64_t record_id = 1;
     struct sea_block *block = sea_block_open(dir, 0);
-    struct sea_block_record *record_list = sea_block_query_by_record_id(block, record_id);
-	sea_block_record_foreach(record_list, foreach_func_test, NULL);
-    sea_block_record_free(record_list);
+
+    char buf[2048] = {0};
+    uint32_t buf_len = 2048;
+    uint32_t ret_buf_len = 0;
+    sea_block_query_by_record_id(block, record_id, buf, buf_len, &ret_buf_len);
 
     sea_block_close(block);
 	return 0;

@@ -37,3 +37,6 @@
 #include "../block/sea_block_record.h"
 #include "../block/sea_block_offset.h"
 #include "../block/utils.h"
+#include "queue.h"
+#include "tree.h"
+#include "khash.h"

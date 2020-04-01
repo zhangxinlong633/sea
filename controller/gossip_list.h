@@ -1,9 +1,11 @@
 #ifndef __GOSSIP_LIST_H
 #define __GOSSIP_LIST_H
 
+#include "../include/public.h"
+
 struct gossip_list;
 int gossip_list_init();
-int gossip_list_fini();
+void gossip_list_fini();
 
 struct gossip_list *gossip_list_create(uint32_t node_cap);
 void gossip_list_destroy(struct gossip_list *gossip_list);

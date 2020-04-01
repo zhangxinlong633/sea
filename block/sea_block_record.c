@@ -73,7 +73,7 @@ void *sea_block_record_get_first(struct sea_block_record *header, uint32_t *leng
 {
 	struct sea_block_record_data *data = TAILQ_FIRST(&header->head);
 
-	if (data = NULL) {
+	if (data == NULL) {
 		return NULL;
 	}
 

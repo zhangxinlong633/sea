@@ -1,10 +1,10 @@
 #include "../include/public.h"
 
-#define PHONE_LIST_BLOCK_NAME 64
+KHASH_MAP_INIT_INT64(64, void *)
 
 struct phone_list {
 	uint32_t node_cap;
-	khash_t(PHONE_LIST_BLOCK_NAME) *header;
+	khash_t(64) *header;
 };
 
 struct phone_entry {
@@ -14,8 +14,13 @@ struct phone_entry {
 	uint32_t node[0];
 };
 
+uint32_t min(uint32_t a, uint32_t b) {
+	return a > b ? a : b;
+}
+
 struct phone_list *phone_list_create(uint32_t node_cap)
 {
+	int ret = EINVAL;
 	struct phone_list *list = NULL;
 	list = malloc(sizeof(struct phone_list));
 	if (list == NULL) {
@@ -23,10 +28,11 @@ struct phone_list *phone_list_create(uint32_t node_cap)
 	}
 
 	list->node_cap = node_cap;
-	list->header = kh_init(PHONE_LIST_BLOCK_NAME);
+	list->header = kh_init(64);
+	ret = 0;
 
 exit:
-	return ret;
+	return list;
 }
 
 void phone_list_destroy(struct phone_list *phone_list)
@@ -55,13 +61,13 @@ int phone_list_put(struct phone_list *phone_list, uint64_t block_id, uint32_t *n
 	entry->block_id = block_id;
 	entry->node_len = node_count;
 	memcpy(entry->node, node, sizeof(uint32_t) * node_count);
-	entry->entry = kh_put(PHONE_LIST_BLOCK_NAME, list->header, block_id, &ret);
+	entry->entry = kh_put(64, phone_list->header, block_id, &ret);
 	if (ret != 0) {
 		free_flag = 1;
 		goto exit;
 	}
 
-    kh_value(list->header, entry->entry) = entry;
+    kh_value(phone_list->header, entry->entry) = entry;
 		
 	ret = 0;
 
@@ -79,14 +85,14 @@ int phone_list_get(struct phone_list *phone_list, uint64_t block_id, uint32_t *n
 {
 	int ret = EINVAL;
 	uint32_t node_count = 0;
-	khiter_t k = kh_get(PHONE_LIST_BLOCK_NAME, list->header, block_id);
+	khiter_t k = kh_get(64, phone_list->header, block_id);
 
 	if (node_len == 0) {
 		ret = ENOENT;
 		goto exit;
 	}
 
-	struct phone_entry *entry = kh_value(list->header, k);
+	struct phone_entry *entry = kh_value(phone_list->header, k);
 	if (entry == NULL) {
 		goto exit;
 	}
@@ -119,6 +125,6 @@ int phone_list_init()
 
 int phone_list_fini()
 {
-
+	return 0;
 }
 

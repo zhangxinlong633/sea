@@ -4,8 +4,10 @@ project(block)
 set(CMAKE_CXX_STANDARD 14)
 
 include_directories(.)
+add_subdirectory(test)
 
-add_executable(block
+
+add_library(sea_block SHARED
         public.h
         sea_block.c
         sea_block.h
@@ -17,6 +19,8 @@ add_executable(block
         sea_block_offset.h
         sea_block_record.c
         sea_block_record.h
-        test.c
         utils.c
         utils.h)
+
+# add_executable(test
+ #       block/test.c)

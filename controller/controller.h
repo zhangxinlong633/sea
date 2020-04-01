@@ -1,6 +1,7 @@
 #ifndef __CONTROLLER_H_
 #define __CONTROLLER_H_
 
+#include "../include/public.h"
 struct sea_controller;
 
 struct sea_controller *sea_controller_create();

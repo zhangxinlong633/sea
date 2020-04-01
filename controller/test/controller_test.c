@@ -1,11 +1,11 @@
-#include "controller.h"
-#include "../include/public.h"
-#include "../block/public.h"
+#include "../controller.h"
+#include "../../include/public.h"
+#include "../../block/public.h"
 
-int dump_data(void *data, int data_len)
+void dump_data(void *data, int data_len)
 {
 	for (int i = 0; i < data_len; i ++) {
-		printf ("%x", data[i]);
+		printf ("%x",  ((char *)data)[i]);
 		if (i % 8 == 0) {
 			printf(" ");
 		}
@@ -17,6 +17,7 @@ int dump_data(void *data, int data_len)
 
 int main(int argc, char **argv)
 {
+	int ret = EINVAL;
 	sea_controller_init();
 	struct sea_controller *controller;
 
@@ -25,7 +26,8 @@ int main(int argc, char **argv)
 		goto exit;
 	}
 
-	char buf[1024] = 0;
+	char buf[1024] = {0};
+	#define COUNT 1024
 
 	uint64_t block_id[COUNT] = {0}; 
 	uint32_t record_id[COUNT] = {0};
@@ -38,9 +40,9 @@ int main(int argc, char **argv)
 		}
 	}
 
-	uint32_t  ret_buf_len = 0;
+	int ret_buf_len = 0;
 	for (int i = 0; i < 100; i ++) {
-		ret = sea_controller_read(controller, block_id[i], record_id[i], buf, buf_len, &ret_buf_len);
+		ret = sea_controller_read(controller, block_id[i], record_id[i], buf, 1024, &ret_buf_len);
 		if (ret != 0) {
 			goto exit;
 		}
