@@ -1,4 +1,10 @@
 2020-04-01
 1. phone list -> ok
-2. gossip list -> current
-3. http server
+2. gossip list -> 废弃
+3. http server -> ok
+
+2020-04-05
+1. dht -> current
+2. http get, post 一亿条数据接口
+3. gossip
+
