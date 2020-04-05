@@ -1,0 +1,62 @@
+[
+{
+  "directory": "/Users/zhangxinlong/数据之海/sea/build/block",
+  "command": "/usr/bin/clang -Dsea_block_EXPORTS -I/Users/zhangxinlong/数据之海/sea/block/.  -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -fPIC   -std=gnu11 -o CMakeFiles/sea_block.dir/sea_block.c.o   -c /Users/zhangxinlong/数据之海/sea/block/sea_block.c",
+  "file": "/Users/zhangxinlong/数据之海/sea/block/sea_block.c"
+},
+{
+  "directory": "/Users/zhangxinlong/数据之海/sea/build/block",
+  "command": "/usr/bin/clang -Dsea_block_EXPORTS -I/Users/zhangxinlong/数据之海/sea/block/.  -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -fPIC   -std=gnu11 -o CMakeFiles/sea_block.dir/sea_block_data.c.o   -c /Users/zhangxinlong/数据之海/sea/block/sea_block_data.c",
+  "file": "/Users/zhangxinlong/数据之海/sea/block/sea_block_data.c"
+},
+{
+  "directory": "/Users/zhangxinlong/数据之海/sea/build/block",
+  "command": "/usr/bin/clang -Dsea_block_EXPORTS -I/Users/zhangxinlong/数据之海/sea/block/.  -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -fPIC   -std=gnu11 -o CMakeFiles/sea_block.dir/sea_block_index.c.o   -c /Users/zhangxinlong/数据之海/sea/block/sea_block_index.c",
+  "file": "/Users/zhangxinlong/数据之海/sea/block/sea_block_index.c"
+},
+{
+  "directory": "/Users/zhangxinlong/数据之海/sea/build/block",
+  "command": "/usr/bin/clang -Dsea_block_EXPORTS -I/Users/zhangxinlong/数据之海/sea/block/.  -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -fPIC   -std=gnu11 -o CMakeFiles/sea_block.dir/sea_block_offset.c.o   -c /Users/zhangxinlong/数据之海/sea/block/sea_block_offset.c",
+  "file": "/Users/zhangxinlong/数据之海/sea/block/sea_block_offset.c"
+},
+{
+  "directory": "/Users/zhangxinlong/数据之海/sea/build/block",
+  "command": "/usr/bin/clang -Dsea_block_EXPORTS -I/Users/zhangxinlong/数据之海/sea/block/.  -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -fPIC   -std=gnu11 -o CMakeFiles/sea_block.dir/sea_block_record.c.o   -c /Users/zhangxinlong/数据之海/sea/block/sea_block_record.c",
+  "file": "/Users/zhangxinlong/数据之海/sea/block/sea_block_record.c"
+},
+{
+  "directory": "/Users/zhangxinlong/数据之海/sea/build/block",
+  "command": "/usr/bin/clang -Dsea_block_EXPORTS -I/Users/zhangxinlong/数据之海/sea/block/.  -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -fPIC   -std=gnu11 -o CMakeFiles/sea_block.dir/utils.c.o   -c /Users/zhangxinlong/数据之海/sea/block/utils.c",
+  "file": "/Users/zhangxinlong/数据之海/sea/block/utils.c"
+},
+{
+  "directory": "/Users/zhangxinlong/数据之海/sea/build/block/test",
+  "command": "/usr/bin/clang  -I/Users/zhangxinlong/数据之海/sea/block/.  -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk   -std=gnu11 -o CMakeFiles/test.dir/test.c.o   -c /Users/zhangxinlong/数据之海/sea/block/test/test.c",
+  "file": "/Users/zhangxinlong/数据之海/sea/block/test/test.c"
+},
+{
+  "directory": "/Users/zhangxinlong/数据之海/sea/build/controller",
+  "command": "/usr/bin/clang -Dsea_controller_EXPORTS  -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -fPIC   -std=gnu11 -o CMakeFiles/sea_controller.dir/gossip_list.c.o   -c /Users/zhangxinlong/数据之海/sea/controller/gossip_list.c",
+  "file": "/Users/zhangxinlong/数据之海/sea/controller/gossip_list.c"
+},
+{
+  "directory": "/Users/zhangxinlong/数据之海/sea/build/controller",
+  "command": "/usr/bin/clang -Dsea_controller_EXPORTS  -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -fPIC   -std=gnu11 -o CMakeFiles/sea_controller.dir/phone_list.c.o   -c /Users/zhangxinlong/数据之海/sea/controller/phone_list.c",
+  "file": "/Users/zhangxinlong/数据之海/sea/controller/phone_list.c"
+},
+{
+  "directory": "/Users/zhangxinlong/数据之海/sea/build/controller",
+  "command": "/usr/bin/clang -Dsea_controller_EXPORTS  -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -fPIC   -std=gnu11 -o CMakeFiles/sea_controller.dir/controller.c.o   -c /Users/zhangxinlong/数据之海/sea/controller/controller.c",
+  "file": "/Users/zhangxinlong/数据之海/sea/controller/controller.c"
+},
+{
+  "directory": "/Users/zhangxinlong/数据之海/sea/build/controller/test",
+  "command": "/usr/bin/clang   -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk   -std=gnu11 -o CMakeFiles/controller_test.dir/controller_test.c.o   -c /Users/zhangxinlong/数据之海/sea/controller/test/controller_test.c",
+  "file": "/Users/zhangxinlong/数据之海/sea/controller/test/controller_test.c"
+},
+{
+  "directory": "/Users/zhangxinlong/数据之海/sea/build/rest",
+  "command": "/usr/bin/clang -DNNG_HAVE_BUS0 -DNNG_HAVE_PAIR0 -DNNG_HAVE_PAIR1 -DNNG_HAVE_PUB0 -DNNG_HAVE_PULL0 -DNNG_HAVE_PUSH0 -DNNG_HAVE_REP0 -DNNG_HAVE_REQ0 -DNNG_HAVE_RESPONDENT0 -DNNG_HAVE_SUB0 -DNNG_HAVE_SURVEYOR0 -DNNG_STATIC_LIB -DNNG_TRANSPORT_INPROC -DNNG_TRANSPORT_IPC -DNNG_TRANSPORT_TCP -DNNG_TRANSPORT_TLS -isystem /usr/local/include  -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk   -std=gnu11 -o CMakeFiles/rest-server.dir/server.c.o   -c /Users/zhangxinlong/数据之海/sea/rest/server.c",
+  "file": "/Users/zhangxinlong/数据之海/sea/rest/server.c"
+}
+]

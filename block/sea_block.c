@@ -166,6 +166,8 @@ int sea_block_query_by_record_id(struct sea_block *block, uint32_t record_id, vo
 		goto exit;
 	}
 
+	*ret_buf_len = data_len;
+
 	memcpy(buf, data, data_len);
 	ret = 0;	
 

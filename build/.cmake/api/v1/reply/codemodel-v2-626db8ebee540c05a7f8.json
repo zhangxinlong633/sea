@@ -1,0 +1,237 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						3,
+						5
+					],
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"projectIndex" : 0,
+					"source" : "."
+				},
+				{
+					"build" : "block",
+					"childIndexes" : 
+					[
+						2
+					],
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "block",
+					"targetIndexes" : 
+					[
+						2
+					]
+				},
+				{
+					"build" : "block/test",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 2,
+					"source" : "block/test",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "controller",
+					"childIndexes" : 
+					[
+						4
+					],
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 3,
+					"source" : "controller",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"build" : "controller/test",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 3,
+					"projectIndex" : 4,
+					"source" : "controller/test",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"build" : "rest",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "2.8.7"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 5,
+					"source" : "rest",
+					"targetIndexes" : 
+					[
+						1
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1,
+						3,
+						5
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "sea"
+				},
+				{
+					"childIndexes" : 
+					[
+						2
+					],
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "block",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						2
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						2
+					],
+					"name" : "block_test",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						4
+					],
+					"directoryIndexes" : 
+					[
+						3
+					],
+					"name" : "controller",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						4
+					],
+					"name" : "controller_test",
+					"parentIndex" : 3,
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						5
+					],
+					"name" : "rest",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						1
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 4,
+					"id" : "controller_test::@bb376b0bf6866ced8233",
+					"jsonFile" : "target-controller_test-Debug-605c3feb330f547e296a.json",
+					"name" : "controller_test",
+					"projectIndex" : 4
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "rest-server::@58182769f5c1e515ef72",
+					"jsonFile" : "target-rest-server-Debug-8f12af7fa58795ed9aa6.json",
+					"name" : "rest-server",
+					"projectIndex" : 5
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "sea_block::@aa25218b880fcbadda1b",
+					"jsonFile" : "target-sea_block-Debug-9d7504c438728a0dd1e6.json",
+					"name" : "sea_block",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "sea_controller::@b89a50b1d9b6a3589dde",
+					"jsonFile" : "target-sea_controller-Debug-e033dd71b1bc9ace42c7.json",
+					"name" : "sea_controller",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "test::@e4fe69204ac53839c73c",
+					"jsonFile" : "target-test-Debug-de848deeb7b01b4cdb67.json",
+					"name" : "test",
+					"projectIndex" : 2
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/Users/zhangxinlong/数据之海/sea/build",
+		"source" : "/Users/zhangxinlong/数据之海/sea"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 0
+	}
+}

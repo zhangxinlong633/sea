@@ -12,14 +12,19 @@ struct sea_controller {
 	struct phone_list *phone_list;
 };
 
-struct sea_controller *sea_controller_create()
+struct sea_controller *sea_controller_create(uint64_t block_id)
 {
 	struct sea_controller *controller = malloc(sizeof(struct sea_controller));
 	if (controller == NULL) {
 		goto exit;
 	}
 
-	controller->block_id = time(NULL);
+	if (block_id == 0) {
+        controller->block_id = time(NULL);
+    } else {
+        controller->block_id = block_id;
+	}
+
 	controller->block = NULL;
 	controller->phone_list = phone_list_create(3);
 
@@ -73,16 +78,16 @@ exit:
 	return ret;
 }
 
-int sea_controller_read(struct sea_controller *controller, uint64_t block_id, uint32_t record_id, char *buf, int buf_len, uint32_t *ret_buf_len)
+int sea_controller_read(struct sea_controller *controller, uint64_t block_id, uint32_t record_id, char *buf, uint32_t buf_len, uint32_t *ret_buf_len)
 {
 	int ret = EINVAL;
 	uint32_t ip_list[16] = {0};
 	uint32_t ret_ip_len = 0;
 
-	ret = get_ip_list(controller, block_id, ip_list, 16, &ret_ip_len);
+	/*ret = get_ip_list(controller, block_id, ip_list, 16, &ret_ip_len);
 	if (ret != 0 || ip_list[0] == 0) {
 		goto exit;
-	}
+	} */
 
 	ret = sea_controller_read_from_local(block_id, record_id, buf, buf_len, ret_buf_len);
 
