@@ -1,1 +1,0 @@
-/usr/bin/clang -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/rest-server.dir/server.c.o  -o rest-server  /usr/local/lib/libnng.a -lpthread 

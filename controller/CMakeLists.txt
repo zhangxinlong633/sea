@@ -5,6 +5,7 @@ add_subdirectory(test)
 
 set(CMAKE_CXX_STANDARD 14)
 
+include_directories("/usr/local/include")
 link_directories("/usr/local/lib")
 link_libraries(sea_block)
 
@@ -13,5 +14,5 @@ add_library(sea_controller SHARED
         gossip_list.h
         phone_list.c
         phone_list.h
-        controller.c)
+        controller.c dht_list.c dht_list.h)
 

@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include "phone_list.h"
 #include "../include/public.h"
@@ -37,26 +36,6 @@ void sea_controller_destroy(struct sea_controller *controller)
 	free(controller);	
 }
 
-static int get_ip_list(struct sea_controller *controller, uint64_t block_id, uint32_t *ip_list, int ip_list_len, uint32_t *ret_ip_len)
-{
-	int ret = EINVAL;
-
-	/*1. find phone_list */
-	ret = phone_list_get(controller->phone_list, block_id, ip_list, ip_list_len, ret_ip_len);
-	if (ret == 0 && ip_list[0] != 0) {
-		goto exit;
-	}
-
-	/*3. find gossip */
-	/*ret = gossip_list_get(block_id, ip_list, ip_list_len, ret_ip_len);
-	if (ret == 0 && ip[0] != 0) {
-		goto exit;
-	}*/
-
-exit:
-	return ret;
-}
-
 int sea_controller_read_from_local(uint64_t block_id, uint32_t record_id, char *buf, int buf_len, uint32_t *ret_buf_len)
 {
 	int ret = EINVAL;
@@ -78,36 +57,22 @@ exit:
 	return ret;
 }
 
+//策略：读的时候，优先找自己，找到就读自己的数据，找不到就寻找节点
 int sea_controller_read(struct sea_controller *controller, uint64_t block_id, uint32_t record_id, char *buf, uint32_t buf_len, uint32_t *ret_buf_len)
 {
 	int ret = EINVAL;
 	uint32_t ip_list[16] = {0};
 	uint32_t ret_ip_len = 0;
 
-	/*ret = get_ip_list(controller, block_id, ip_list, 16, &ret_ip_len);
+    ret = phone_list_get(controller->phone_list, block_id, ip_list, 16, ret_ip_len);
 	if (ret != 0 || ip_list[0] == 0) {
 		goto exit;
-	} */
+	}
 
 	ret = sea_controller_read_from_local(block_id, record_id, buf, buf_len, ret_buf_len);
 
-	/*uint8_t local_flag = pick_ip_local(ip_list, ip_list_len);
-	if (local_flag) {
-		// 本地ip, 直接读数据返回，不需要再次建立链接	
-		ret = read_from_local(block_id, record_id, buf, buf_len, ret_buf_len);
-		if (ret == 0 && ret_buf_len != 0) {
-			goto exit;	
-		}
-	}
-
-	// 到远程主机get data
-	for (int i = 0; i < ret_ip_len; i ++) {
-		// 请求 ip
-		ret = remote_ip_get_record(ip_list[i], block_id, record_id, buf, buf_len, ret_buf_len);
-		if (ret == 0 || ret_buf_len != 0) {
-			goto exit;	
-		}
-	} */
+	// todo: 本地没有block读远程的blockid
+	dht_find_node_data(controller, block_id, record_id, buf, buf_len, ret_buf_len);
 
 exit:
 	return ret;
@@ -143,27 +108,23 @@ exit:
 	return ret;
 }
 
+int load_local_blocks(void)
+{
+   // 找到所有block,将他们插入到phone_list.
+   // 将没有插入满的几个block单独返回，供后续插入使用.
+}
+
+//策略：写的时候优先写自己，然后找响应最快的节点
 int sea_controller_write(struct sea_controller *controller, char *buf, int buf_len, uint64_t *block_id, uint32_t *record_id)
 {
 	int ret = EINVAL;
 
-	ret = sea_controller_write_local(controller, buf, buf_len, block_id, record_id);
-	if (ret != 0) {
-		goto exit;
-	}
+    if ((has_free_block_id || block_id = generate_local_block_id()) && space > LIMIT) {
+        ret = sea_controller_write_local(controller, buf, buf_len, block_id, record_id);
+        goto exit;
+    }
 
-	/*int remote_count = 0;
-
-	uint32_t rmote_ip_list[16] = {0};
-
-	// 挑选符合条件的remote，条件标准, 1. 剩余空间越大，越靠前, 2. 响应时间越短越靠前.
-	ret = get_remote(rmote_ip_list, 16, &ret_remote_count);
-	for (int i = 0; i < ret_remote_count; i ++) {
-		ret = write_remote(remote_ip_list[i], buf, buf_len, block_id, record_id);
-		if (ret == 0) {
-			break;
-		}
-	} */
+    dht_forward_data(controller, buf, buf_len, block_id, record_id);
 
 exit:
 	return ret;
@@ -171,6 +132,9 @@ exit:
 
 int sea_controller_init(void)
 {
+    //todo 建立dht nng socket
+    // 初始化dht
+    dht_list_init();
 	return 0;
 }
 

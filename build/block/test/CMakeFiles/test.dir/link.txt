@@ -1,1 +1,0 @@
-/usr/bin/clang -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/test.dir/test.c.o  -o test   -L/usr/local/lib  -Wl,-rpath,/Users/zhangxinlong/数据之海/sea/build/block -Wl,-rpath,/usr/local/lib ../libsea_block.dylib 
