@@ -3,6 +3,7 @@ project(sea C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_subdirectory(block_row)
+add_subdirectory(block)
 add_subdirectory(controller)
 add_subdirectory(rest)
+add_subdirectory(block_array)

@@ -72,7 +72,7 @@ int sea_controller_read(struct sea_controller *controller, uint64_t block_id, ui
 	ret = sea_controller_read_from_local(block_id, record_id, buf, buf_len, ret_buf_len);
 
 	// todo: 本地没有block读远程的blockid
-	dht_find_node_data(controller, block_id, record_id, buf, buf_len, ret_buf_len);
+	//dht_find_node_data(controller, block_id, record_id, buf, buf_len, ret_buf_len);
 
 exit:
 	return ret;
@@ -112,6 +112,7 @@ int load_local_blocks(void)
 {
    // 找到所有block,将他们插入到phone_list.
    // 将没有插入满的几个block单独返回，供后续插入使用.
+   return 0;
 }
 
 //策略：写的时候优先写自己，然后找响应最快的节点
@@ -119,14 +120,14 @@ int sea_controller_write(struct sea_controller *controller, char *buf, int buf_l
 {
 	int ret = EINVAL;
 
-    if ((has_free_block_id || block_id = generate_local_block_id()) && space > LIMIT) {
+    //if ((has_free_block_id || block_id = generate_local_block_id()) && space > LIMIT) {
         ret = sea_controller_write_local(controller, buf, buf_len, block_id, record_id);
-        goto exit;
-    }
+     //   goto exit;
+    //}
 
-    dht_forward_data(controller, buf, buf_len, block_id, record_id);
+    //dht_forward_data(controller, buf, buf_len, block_id, record_id);
 
-exit:
+//exit:
 	return ret;
 }
 
@@ -134,7 +135,7 @@ int sea_controller_init(void)
 {
     //todo 建立dht nng socket
     // 初始化dht
-    dht_list_init();
+    //dht_list_init();
 	return 0;
 }
 
