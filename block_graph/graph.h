@@ -7,6 +7,7 @@
  * 方案优点：
  *  1. 0(1)访问到node, edge, property
  *  2. 不用跨block 访问node, edge, property, 特别是在分布式环境，跨block意味在不同网络。延时太高。
+ *  3. 可以通过property 快速找到node,有利于全文搜索
  * 方案缺点:
  *  1. 一个结点最多会浪费1024字节
  *  2. 后期加property超过1024字节，比较麻烦, 要么拆文件，要么跨网络
