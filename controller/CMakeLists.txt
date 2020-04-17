@@ -14,5 +14,5 @@ add_library(sea_controller SHARED
         gossip_list.h
         phone_list.c
         phone_list.h
-        controller.c dht_list.c dht_list.h)
+        controller.c)
 

@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 	sea_controller_init();
 	struct sea_controller *controller;
 
-	controller = sea_controller_create();
+	controller = sea_controller_create(2);
 	if (controller == NULL) {
 		goto exit;
 	}
