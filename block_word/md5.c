@@ -1,5 +1,6 @@
 #include <memory.h>
 #include "md5.h"
+#include "../include/public.h"
 
 unsigned char PADDING[]={0x80,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
                          0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -160,3 +161,16 @@ void MD5Transform(unsigned int state[4],unsigned char block[64])
     state[3] += d;
 }
 
+int md5(unsigned char *word, char *output, int output_len)
+{
+    int i;
+    unsigned char decrypt[16];
+    MD5_CTX md5;
+    MD5Init(&md5);
+    MD5Update(&md5,word,strlen((char *)word));
+    MD5Final(&md5,decrypt);
+    for(i = 0; i < 16; i++) {
+        snprintf(output + i * 2, output_len - i * 2,  "%02x",decrypt[i]);
+    }
+    return 0;
+}

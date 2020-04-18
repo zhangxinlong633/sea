@@ -1,9 +1,9 @@
-#include "graph_v3.h"
+#include "graph.h"
 
-int create_node(struct sea_block *block, struct node_info *node,
-                struct graph_attr_info *attr_info, uint16_t attr_count,
-                struct graph_edge_info *edge_info, uint16_t edge_count,
-                uint32_t *node_id)
+int create_node_data(struct sea_block *block, struct node_info *node,
+                     struct graph_attr_info *attr_info, uint16_t attr_count,
+                     struct graph_edge_info *edge_info, uint16_t edge_count,
+                     uint32_t *node_id, uint32_t edge_free_size, uint32_t attr_free_size)
 {
     int ret = EINVAL;
     int node_size = sizeof(struct node_info);
@@ -48,7 +48,7 @@ exit:
     return ret;
 }
 
-struct node_info *find_node(struct sea_block *block, uint32_t node_id, uint32_t *ret_buf_len)
+struct node_info *find_node_data(struct sea_block *block, uint32_t node_id, uint32_t *ret_buf_len)
 {
     int ret = EINVAL;
     struct node_info *info = malloc(1024*1024);

@@ -1,5 +1,6 @@
+#include <graph_data.h>
 #include "../../include/public.h"
-#include "../graph_v3.h"
+#include "../graph.h"
 
 uint64_t block_id = 1;
 
@@ -29,7 +30,7 @@ int insert_test()
     uint32_t node_id = 0;
 
     for (int i = 0; i < 1000; i ++) {
-        ret = create_node(block, &node, &attr_info, 1, &edge_info, 1, &node_id);
+        ret = create_node_data(block, &node, &attr_info, 1, &edge_info, 1, &node_id, 1024, 1024);
         if (ret != 0) {
             goto exit;
         }
@@ -49,7 +50,7 @@ int query_by_record_id_test()
     uint32_t ret_buf_len = 0;
 
     for (int i = 0; i < 1000; i ++) {
-        struct node_info *node = find_node(block, i, &ret_buf_len);
+        struct node_info *node = find_node_data(block, i, &ret_buf_len);
         if (node->edge_count != 1 || node->attr_count != 1) {
             goto exit;
         }

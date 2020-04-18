@@ -44,4 +44,5 @@ void MD5Final(MD5_CTX *context,unsigned char digest[16]);
 void MD5Transform(unsigned int state[4],unsigned char block[64]);
 void MD5Encode(unsigned char *output,unsigned int *input,unsigned int len);
 void MD5Decode(unsigned int *output,unsigned char *input,unsigned int len);
+int md5(unsigned char *word, char *output, int output_len);
 #endif //SEA_MD5_H

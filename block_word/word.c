@@ -6,19 +6,6 @@ struct sea_word {
     struct col_array *array;
 };
 
-int md5(unsigned char *word, char *output, int output_len)
-{
-    int i;
-    unsigned char decrypt[16];
-    MD5_CTX md5;
-    MD5Init(&md5);
-    MD5Update(&md5,word,strlen((char *)word));
-    MD5Final(&md5,decrypt);
-    for(i = 0; i < 16; i++) {
-        snprintf(output + i * 2, output_len - i * 2,  "%02x",decrypt[i]);
-    }
-    return 0;
-}
 
 int sea_word_create(char *word)
 {

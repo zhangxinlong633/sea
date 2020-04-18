@@ -7,8 +7,9 @@ include_directories(.)
 add_subdirectory(test)
 link_directories("/usr/local/lib")
 link_libraries(sea_block)
+link_libraries(block_word)
 
 
 add_library(graph SHARED
-        graph_v3.c
-        graph_v3.h)
+        graph_data.c
+        graph.h graph.c version.h graph_data.h)
