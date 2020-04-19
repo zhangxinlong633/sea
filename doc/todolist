@@ -8,3 +8,7 @@
 2. http get, post 一亿条数据接口
 3. gossip
 
+2020-04-19
+1. 1亿条数据用各个模块bechmark. -> current
+2. 1000亿条数据继续benchmark.
+
