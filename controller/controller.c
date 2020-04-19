@@ -64,7 +64,7 @@ int sea_controller_read(struct sea_controller *controller, uint64_t block_id, ui
 	uint32_t ip_list[16] = {0};
 	uint32_t ret_ip_len = 0;
 
-    ret = phone_list_get(controller->phone_list, block_id, ip_list, 16, ret_ip_len);
+    ret = phone_list_get(controller->phone_list, block_id, ip_list, 16, &ret_ip_len);
 	if (ret != 0 || ip_list[0] == 0) {
 		goto exit;
 	}

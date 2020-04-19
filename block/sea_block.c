@@ -81,7 +81,7 @@ void sea_block_close(struct sea_block *block)
 	free(block);
 }
 
-int sea_block_append(struct sea_block *block, void *data, int length, uint32_t *record_id, int *overlimit)
+int sea_block_append(struct sea_block *block, void *data, int length, uint32_t *record_id, int *over_limit)
 {
 	int ret = EINVAL;
 	if (block == NULL || block->index == NULL || data == NULL || length == 0) {
@@ -89,12 +89,12 @@ int sea_block_append(struct sea_block *block, void *data, int length, uint32_t *
 	}
 
 	uint64_t offset = 0;
-	ret = sea_block_data_append(block->data, data, length, overlimit, &offset);
+	ret = sea_block_data_append(block->data, data, length, over_limit, &offset);
 	if (ret != 0) {
 		goto exit;
 	}
 
-	ret = sea_block_index_append(block->index, offset, record_id, overlimit);
+	ret = sea_block_index_append(block->index, offset, record_id, over_limit);
 	if (ret != 0) {
 		goto exit;
 	} 
@@ -181,4 +181,10 @@ exit:
 
 	return ret;
 }
+
+int sea_block_update(struct sea_block *block, uint32_t record_id, void *data, int length)
+{
+    return 0;
+}
+
 

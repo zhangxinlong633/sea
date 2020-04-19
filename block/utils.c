@@ -6,7 +6,7 @@ int make_sub_dir(char *dir, uint64_t block_id)
 
 	snprintf(dirname, PATH_MAX, "%s/%llu", dir, block_id);
  	int ret = mkdir(dirname, S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
- 	printf("ret: %d, errno: %d\n", ret, errno);
+ 	//printf("ret: %d, errno: %d\n", ret, errno);
 	return ret;
 }
 

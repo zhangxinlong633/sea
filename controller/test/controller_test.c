@@ -39,8 +39,7 @@ int main(int argc, char **argv)
 			goto exit;
 		}
 	}
-
-	int ret_buf_len = 0;
+	uint32_t ret_buf_len = 0;
 	for (int i = 0; i < 100; i ++) {
 		ret = sea_controller_read(controller, block_id[i], record_id[i], buf, 1024, &ret_buf_len);
 		if (ret != 0) {

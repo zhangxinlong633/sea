@@ -10,13 +10,13 @@ link_libraries(graph)
 link_libraries(block_word)
 
 add_executable(bench_array_test
-        bench_array.c)
+        array/bench_array.c)
 
 add_executable(bench_block_test
-        bench_block.c)
+        block/bench_block.c)
 
 add_executable(bench_graph_test
-        bench_graph.c)
+        graph/bench_graph.c)
 
 add_executable(bench_word_test
-        bench_word.c)
+        word/bench_word.c)

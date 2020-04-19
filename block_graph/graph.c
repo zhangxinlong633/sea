@@ -16,7 +16,8 @@ uint64_t graph_db_get_block_id(char *db_name)
 
     md5((unsigned char *)db_name, output, 256);
 
-    return (uint64_t)output;
+    uint64_t block_id = (uint64_t)output;
+    return block_id;
 }
 int graph_db_create(char *dir, char *db_name)
 {
