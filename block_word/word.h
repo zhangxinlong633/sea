@@ -5,10 +5,10 @@
 
 struct sea_word ;
 
-int sea_word_create(char *word);
-int sea_word_destroy(char *word);
+int sea_word_create(char *dir, char *word);
+int sea_word_destroy(char *dir, char *word);
 
-struct sea_word *sea_word_open(char *word, int *error);
+struct sea_word *sea_word_open(char *dir, char *word, int *error);
 void sea_word_close(struct sea_word *doc);
 
 /**

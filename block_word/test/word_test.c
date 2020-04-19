@@ -5,10 +5,11 @@ int main(int argc, char **argv)
     int error;
     int ret = EINVAL;
     char *word = "test";
+    char *dir = "/Users/zhangxinlong/tmp/";
 
-    sea_word_create(word);
+    sea_word_create(dir, word);
 
-    struct sea_word *word_conn = sea_word_open(word, &error);
+    struct sea_word *word_conn = sea_word_open(dir, word, &error);
     if (word_conn == NULL || error != 0) {
         goto exit;
     }
@@ -46,6 +47,6 @@ exit:
     if (word_conn) {
         sea_word_close(word_conn);
     }
-    sea_word_destroy(word);
+    sea_word_destroy(dir, word);
     return ret;
 }
