@@ -4,20 +4,24 @@
 #include "graph_data.h"
 
 struct graph_db_conn {
-    char dir[32];
+    char dir[128];
     uint64_t index_block_id;
     struct sea_block *index_block;
     struct sea_block *data_block;
+};
+union xx {
+    uint64_t block_id;
+    char output[256];
 };
 
 uint64_t graph_db_get_block_id(char *db_name)
 {
     char output[256] = {0};
+    union xx f;
 
-    md5((unsigned char *)db_name, output, 256);
+    md5((unsigned char *)db_name, f.output, 256);
 
-    uint64_t block_id = (uint64_t)output;
-    return block_id;
+    return f.block_id;
 }
 int graph_db_create(char *dir, char *db_name)
 {
@@ -40,13 +44,15 @@ struct graph_db_conn *graph_db_open(char *dir, char *db_name, int *error)
         goto exit;
     }
 
+    memset(conn, 0, sizeof(struct graph_db_conn));
+
     uint64_t block_id = graph_db_get_block_id(db_name);
 
-    struct sea_block *block = sea_block_open(dir, block_id);
-    conn->index_block = block;
+    conn->index_block = sea_block_open(dir, block_id);
     conn->data_block = NULL;
     conn->index_block_id = block_id;
     memcpy(conn->dir, dir, strlen(dir));
+    *error = 0;
 
 exit:
     return conn;
