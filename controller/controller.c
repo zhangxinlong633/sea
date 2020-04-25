@@ -1,39 +1,46 @@
 #include <stdlib.h>
 #include "phone_list.h"
 #include "../include/public.h"
+#include "super_block.h"
 
 #define SEA_CONTROLLER_LOCAL_NODE 0
 #define DATA_DIR "/Users/zhangxinlong/tmp/controller"
 
 struct sea_controller {
-	uint64_t block_id;
+	struct controller_super_block *super_block;
 	struct sea_block *block;
 	struct phone_list *phone_list;
 };
 
-struct sea_controller *sea_controller_create(uint64_t block_id)
+struct sea_controller *sea_controller_create(char *dir)
 {
+	int ret = EINVAL;
 	struct sea_controller *controller = malloc(sizeof(struct sea_controller));
 	if (controller == NULL) {
 		goto exit;
 	}
 
-	if (block_id == 0) {
-        controller->block_id = time(NULL);
-    } else {
-        controller->block_id = block_id;
-	}
-
 	controller->block = NULL;
 	controller->phone_list = phone_list_create(3);
 
+	controller->super_block = controller_super_block_open_or_create(dir, "controller", &ret);
+	if (controller->super_block == NULL) {
+		goto exit;
+	}
+	ret = 0;
+
 exit:
+	if (ret != 0) {
+		free(controller);
+		controller = NULL;
+	}
 	return controller;
 }
 
 void sea_controller_destroy(struct sea_controller *controller)
 {
-	free(controller);	
+	controller_super_block_close(controller->super_block);
+	free(controller);
 }
 
 int sea_controller_read_from_local(uint64_t block_id, uint32_t record_id, char *buf, int buf_len, uint32_t *ret_buf_len)
@@ -82,15 +89,18 @@ int sea_controller_write_local(struct sea_controller *controller, char *buf, int
 {
 	int ret = EINVAL;
 
-	*block_id = controller->block_id;
+	ret = controller_super_block_get_block_id(controller->super_block, block_id);
+	if (ret != 0) {
+		goto exit;
+	}
 
 	if (controller->block == NULL) {
-		controller->block = sea_block_open(DATA_DIR, controller->block_id);
+		controller->block = sea_block_open(DATA_DIR, *block_id);
 		if (controller->block == NULL) {
-			sea_block_create(DATA_DIR, controller->block_id, SEA_BLOCK_MAX_SIZE_DEFAULT, SEA_BLOCK_MAX_COUNT_DEFAULT);
+			sea_block_create(DATA_DIR, *block_id, SEA_BLOCK_MAX_SIZE_DEFAULT, SEA_BLOCK_MAX_COUNT_DEFAULT);
 		}
 
-		controller->block = sea_block_open(DATA_DIR, controller->block_id);
+		controller->block = sea_block_open(DATA_DIR, *block_id);
 	}
 	if (controller->block == NULL) {
 		ret = ENOENT;
@@ -104,10 +114,10 @@ int sea_controller_write_local(struct sea_controller *controller, char *buf, int
 	}
 
 	uint32_t node = SEA_CONTROLLER_LOCAL_NODE;
-	phone_list_put(controller->phone_list, controller->block_id, &node, 1);
+	phone_list_put(controller->phone_list, *block_id, &node, 1);
 
 	if (overlimit) {
-		controller->block_id++;
+		controller_super_block_expire_block_id(controller->super_block, *block_id);
 		sea_block_close(controller->block);
 		controller->block = NULL;
 	}

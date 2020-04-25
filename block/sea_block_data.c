@@ -179,3 +179,39 @@ exit:
     return record_list;
 }
 
+int sea_block_data_insert_by_offsets(struct sea_block_data *data, struct sea_block_offset *offset, void *buffer, uint32_t length)
+{
+    int ret = EINVAL;
+    struct sea_block_data_header header;
+    struct sea_block_data_tail tail;
+
+    header.magic = SEA_BLOCK_DATA_MAGIC_HEADER;
+    header.length = length;
+    header.disable = 0;
+
+    tail.length = length;
+    tail.magic = SEA_BLOCK_DATA_MAGIC_TAIL;
+
+    int buf_len = sizeof(struct sea_block_data_header) + length + sizeof(struct sea_block_data_tail);
+    char *buf = malloc(buf_len);
+    if (buf == NULL) {
+        goto exit;
+    }
+    memcpy(buf, &header, sizeof(struct sea_block_data_header));
+    memcpy(buf + sizeof(struct sea_block_data_header), buffer, length);
+    memcpy(buf + sizeof(struct sea_block_data_header) + length, &tail, sizeof(struct sea_block_data_tail));
+    
+    uint64_t off = sea_block_offset_get(offset, 0);
+
+    lseek(data->fd, off, SEEK_SET);
+    uint32_t size = write(data->fd, buf, buf_len);
+    if (size != buf_len) {
+        ret = ENOENT;
+        goto exit;
+    }
+
+    ret = 0;
+
+exit:
+    return ret;
+}

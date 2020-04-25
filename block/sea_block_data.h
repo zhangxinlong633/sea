@@ -14,6 +14,8 @@ int sea_block_data_close(struct sea_block_data *data);
 int sea_block_data_append(struct sea_block_data *data, void *buffer, uint32_t length, int *overlimit, uint64_t *offset);
 struct sea_block_record *sea_block_data_query_by_offsets(struct sea_block_data *data, struct sea_block_offset *offsets);
 
+int sea_block_data_insert_by_offsets(struct sea_block_data *data, struct sea_block_offset *offset, void *buffer, uint32_t length);
+
 #endif
 
 

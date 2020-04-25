@@ -190,7 +190,20 @@ exit:
 
 int sea_block_update(struct sea_block *block, uint32_t record_id, void *data, int length)
 {
-    return 0;
-}
+	int ret = EINVAL;
+	struct sea_block_offset *offset = sea_block_index_query_by_record_id(block->index, record_id);
+	if (offset == NULL) {
+		goto exit;
+	}
 
+	ret = sea_block_data_insert_by_offsets(block->data, offset, data, length);
+	if (ret != 0) {
+		goto exit;
+	}
+
+	ret = 0;
+
+exit:
+    return ret;
+}
 

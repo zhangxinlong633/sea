@@ -10,6 +10,7 @@
 
 #define REST_URL "http://127.0.0.1:%u/api/sea"
 struct sea_controller *controller = NULL;
+#define DATA_DIR "/Users/zhangxinlong/tmp/controller"
 
 // utility function
 void fatal(const char *what, int rv)
@@ -227,8 +228,7 @@ int main(int argc, char **argv)
 
 	int rv;
     sea_controller_init();
-    uint64_t block_id = 101010;
-    controller = sea_controller_create(block_id);
+    controller = sea_controller_create((char *)DATA_DIR);
     if (controller == NULL) {
         exit(-1);
     }
