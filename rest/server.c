@@ -18,7 +18,7 @@ void fatal(const char *what, int rv)
 	exit(1);
 }
 
-int sea_get(uint64_t block_id, uint32_t record_id, char *buf, int buf_len, int *ret_buf_len)
+int sea_get(uint64_t block_id, uint32_t record_id, char *buf, int buf_len, uint32_t *ret_buf_len)
 {
     return sea_controller_read(controller, block_id, record_id, buf, buf_len, ret_buf_len);
 }
@@ -36,7 +36,7 @@ static void rest_handle_get(nng_aio *aio)
     int           rv;
     char        body[16]="Succ!";
     size_t        len = 5;
-    int ret_buf_len = 0;
+    uint32_t ret_buf_len = 0;
     char buf[1024*128] = {0};
     int buf_len = 1024 * 128;
 
@@ -58,7 +58,7 @@ static void rest_handle_get(nng_aio *aio)
 
     int ret = sea_get(block_id, record_id, buf, buf_len, &ret_buf_len);
     if (ret == 0) {
-        nng_http_res_set_header(res, "Content-type", "text/plain");
+        nng_http_res_set_header(res, "Content-type", "image/png");
         nng_http_res_copy_data(res, buf, ret_buf_len);
     }
 
@@ -71,8 +71,8 @@ static void rest_handle_post(nng_aio *aio)
     nng_http_req *req = nng_aio_get_input(aio, 0);
     nng_http_res *res;
     int           rv;
-    void *        body;
-    size_t        len;
+    char *body ;
+    size_t        len = 0;
 
     nng_http_req_get_data(req, &body, &len);
 
@@ -90,6 +90,8 @@ static void rest_handle_post(nng_aio *aio)
     uint64_t block_id = 0;
     uint32_t record_id = 0;
     int ret = sea_put(body, len, &block_id, &record_id);
+    printf("body: %s\n", body);
+
     if (ret == 0) {
         int res_len = snprintf(resBuf, 1024, "{\"id\":\"%llu_%u\"}", block_id, record_id);
         nng_http_res_copy_data(res, resBuf, res_len);

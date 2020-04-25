@@ -40,6 +40,7 @@ void sea_block_destroy(char *dir, uint64_t block_id)
 
 struct sea_block *sea_block_open(char *dir, uint64_t block_id)
 {
+	int ret = EINVAL;
 	struct sea_block *block = malloc(sizeof(struct sea_block));
 	if (block == NULL) {
 		goto exit;
@@ -64,8 +65,13 @@ struct sea_block *sea_block_open(char *dir, uint64_t block_id)
 	if (block->index== NULL) {
 		goto exit;
 	}
+	ret = 0;
 
 exit:
+	if (ret != 0) {
+		free(block);
+		block = NULL;
+	}
 	return block;		
 }
 

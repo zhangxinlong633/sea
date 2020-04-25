@@ -11,13 +11,14 @@ typedef struct sea_block_data_header
 {
     uint8_t     magic;  
     uint8_t     disable; 
-    uint16_t    length;
+    uint8_t     pad[2]; 
+    uint32_t    length;
 } __attribute__ ((packed)) sea_block_data_header;
 
 typedef struct sea_block_data_tail
 {
-    uint16_t    length;
-    uint8_t     pad;
+    uint32_t    length;
+    uint8_t     pad[3]; 
     uint8_t     magic;
 } __attribute__ ((packed)) sea_block_data_tail;
 
@@ -123,7 +124,6 @@ int sea_block_data_append(struct sea_block_data *data, void *buffer, uint32_t le
 
     tail.length = length;
     tail.magic = SEA_BLOCK_DATA_MAGIC_TAIL;
-    tail.pad = 0;
 
     int buf_len = sizeof(struct sea_block_data_header) + length + sizeof(struct sea_block_data_tail);
     char *buf = malloc(buf_len);
