@@ -29,6 +29,38 @@ int sea_put(char *buf, int buf_len, uint64_t *block_id, uint32_t *record_id)
     return sea_controller_write(controller, buf, buf_len, block_id, record_id);
 }
 
+// uri: /api/sea?id=1010101_1
+int get_block_id_and_record_id(const char *uri, uint64_t *block_id, uint32_t *record_id) 
+{
+    int ret = EINVAL;
+
+    char *id_str = NULL;
+    id_str = strtok((char *)uri, "=");
+        if (id_str == NULL) {
+        goto exit;
+    }
+
+    id_str = strtok(NULL, "=");
+    if (id_str == NULL) {
+        goto exit;
+    }
+
+    char *block_str = strtok(id_str, "_");
+    if (block_str == NULL) {
+        goto exit;
+    }
+
+    char *record_id_str = strtok(NULL, "_");
+    if (record_id_str == NULL) {
+        goto exit;
+    }
+    ret = 0;
+    *record_id = atol(record_id_str);
+    *block_id = atol(block_str);
+
+exit:
+    return ret;
+}
 static void rest_handle_get(nng_aio *aio)
 {
     nng_http_req *req = nng_aio_get_input(aio, 0);
@@ -51,8 +83,16 @@ static void rest_handle_get(nng_aio *aio)
         return;
     }
 
+    const char *uri = nng_http_req_get_uri(req);
+    printf("uri: %s\n", uri);
+    
     uint64_t block_id = 101010;
     uint32_t record_id = 1;
+
+    rv = get_block_id_and_record_id(uri, &block_id, &record_id);
+    if (rv != 0) {
+        goto exit;
+    }
 
     // todo parse block_id, record_id
 
@@ -62,6 +102,7 @@ static void rest_handle_get(nng_aio *aio)
         nng_http_res_copy_data(res, buf, ret_buf_len);
     }
 
+exit:
     nng_aio_set_output(aio, 0, res);
     nng_aio_finish(aio, 0);
 }
@@ -71,7 +112,7 @@ static void rest_handle_post(nng_aio *aio)
     nng_http_req *req = nng_aio_get_input(aio, 0);
     nng_http_res *res;
     int           rv;
-    char *body ;
+    void *body ;
     size_t        len = 0;
 
     nng_http_req_get_data(req, &body, &len);
