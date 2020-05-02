@@ -228,7 +228,7 @@ int main(int argc, char **argv)
 
 	int rv;
     sea_controller_init();
-    controller = sea_controller_create((char *)DATA_DIR);
+    controller = sea_controller_create(DATA_DIR);
     if (controller == NULL) {
         exit(-1);
     }

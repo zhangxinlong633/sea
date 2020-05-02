@@ -79,7 +79,7 @@ int sea_controller_read(struct sea_controller *controller, uint64_t block_id, ui
 	ret = sea_controller_read_from_local(block_id, record_id, buf, buf_len, ret_buf_len);
 
 	// todo: 本地没有block读远程的blockid
-	//dht_find_node_data(controller, block_id, record_id, buf, buf_len, ret_buf_len);
+	ret = dht_find_node_data(block_id, record_id, buf, buf_len, ret_buf_len);
 
 exit:
 	return ret;
@@ -143,7 +143,7 @@ int sea_controller_write(struct sea_controller *controller, char *buf, int buf_l
      //   goto exit;
     //}
 
-    //dht_forward_data(controller, buf, buf_len, block_id, record_id);
+    ret = dht_list_set_data(controller, buf, buf_len, block_id, record_id);
 
 //exit:
 	return ret;
@@ -151,14 +151,15 @@ int sea_controller_write(struct sea_controller *controller, char *buf, int buf_l
 
 int sea_controller_init(void)
 {
-    //todo 建立dht nng socket
-    // 初始化dht
-    //dht_list_init();
+	int port = 8888;
+	int node_list_len = 0;
+	char node_list[12][20] = {{"192.168.0.11"}};
+	dht_list_init(port, node_list_len, node_list);
 	return 0;
 }
 
 void sea_controller_fini(void)
 {
-	return;
+	dht_list_fini();
 }
 
