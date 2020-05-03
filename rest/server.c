@@ -6,6 +6,7 @@
 #include <nng/supplemental/util/platform.h>
 
 #include "../include/public.h"
+#include "../include/protocol.h"
 #include "../controller/controller.h"
 
 #define REST_URL "http://127.0.0.1:%u/api/sea"
@@ -221,7 +222,7 @@ void inproc_server(void *arg) {
     }
 }
 
-int main(int argc, char **argv)
+void rest_server(void) 
 {
 	uint16_t    port = 0;
     nng_thread *inproc_thr;
@@ -244,4 +245,96 @@ int main(int argc, char **argv)
 	port = port ? port : 8888;
 	rest_start(port);
     nng_thread_destroy(inproc_thr);
+}
+
+int data_server_process(void *buf, int size, char *send_buf, uint32_t *send_buf_size) 
+{
+    int ret = EINVAL;
+    struct data_server_hdr *send_hdr = (struct data_server_hdr *)send_buf;
+    struct data_server_hdr *hdr = (struct data_server_hdr *)buf;
+    if (hdr->len != size) {
+        send_hdr->error = DATA_SERVER_ERROR_UNKNOWN;        
+        goto exit;
+    }
+
+    send_hdr->method = hdr->method;
+    send_hdr->error = DATA_SERVER_ERROR_NONE;
+
+    uint32_t ret_buf_len = 0;
+    if (hdr->method == DATA_SERVER_METHOD_GET) {
+        send_hdr->block_id = hdr->block_id;
+        send_hdr->record_id = hdr->record_id;
+
+        ret = sea_controller_read(controller, hdr->block_id, hdr->record_id, send_hdr->data, (*send_buf_size - sizeof(struct data_server_hdr)), &ret_buf_len);
+        if (ret == 0) {
+            *send_buf_size = sizeof(struct data_server_hdr) + ret_buf_len;
+        } else {
+            send_hdr->error = DATA_SERVER_ERROR_GET;
+        }
+    } else if (hdr->method == DATA_SERVER_METHOD_PUT) {
+        ret = sea_controller_write(controller, hdr->data, hdr->len, &send_hdr->block_id, &send_hdr->record_id);
+        if (ret == 0) {
+            *send_buf_size = sizeof(struct data_server_hdr);
+        } else {
+            send_hdr->error = DATA_SERVER_ERROR_PUT;
+        }
+    } else {
+        send_hdr->error = DATA_SERVER_ERROR_UNKNOWN;
+    }
+
+exit:
+    if (ret != 0) {
+        *send_buf_size = sizeof(struct data_server_hdr);
+    }
+
+    return ret;
+}
+
+void data_server_handle(void *arg)
+{
+	nng_socket sock;
+    int rv;
+    const char *url = DATA_SERVER_URL;
+
+    if ((rv = nng_rep0_open(&sock)) != 0) {
+		fatal("nng_rep0_open", rv);
+	}
+	if ((rv = nng_listen(sock, url, NULL, 0)) != 0) {
+		fatal("nng_listen", rv);
+	}
+    char *send_buf = malloc(1024 * 1024 * 10);
+    uint32_t send_buf_size = 1024 * 1024 * 10;
+	for (;;) {
+		char *   buf = NULL;
+		size_t   sz;
+		uint64_t val;
+        send_buf_size = 1024*1024 * 10;
+		if ((rv = nng_recv(sock, &buf, &sz, NNG_FLAG_ALLOC)) != 0) {
+			fatal("nng_recv", rv);
+		}
+        data_server_process(buf, sz, send_buf, &send_buf_size);
+        if (send_buf_size != 0) {
+			rv = nng_send(sock, buf, sz, NNG_FLAG_ALLOC);
+			if (rv != 0) {
+				fatal("nng_send", rv);
+			}
+        }
+		nng_free(buf, sz);
+	}
+}
+
+void data_server()
+{
+    nng_thread *inproc_thr;
+    int rv = nng_thread_create(&inproc_thr, data_server_handle, NULL);
+    if (rv != 0) {
+        fatal("cannot start inproc server", rv);
+    }
+    return 0;
+}
+
+int main(int argc, char **argv)
+{
+    rest_server();
+    data_server();
 }

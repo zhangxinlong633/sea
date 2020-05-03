@@ -17,5 +17,7 @@ add_library(sea_controller SHARED
         controller.c
         controller.h
         super_block.c
-        super_block.h)
+        super_block.h
+        controller_data.c
+        controller_data.h)
 

@@ -77,9 +77,16 @@ int sea_controller_read(struct sea_controller *controller, uint64_t block_id, ui
 	} */
 
 	ret = sea_controller_read_from_local(block_id, record_id, buf, buf_len, ret_buf_len);
+	if (ret != 0) {
+		uint32_t ip = 0;
+		ret = dht_list_get_node(block_id, record_id, &ip);
+		if (ret != 0) {
+			goto exit;
+		}
 
-	// todo: 本地没有block读远程的blockid
-	ret = dht_find_node_data(block_id, record_id, buf, buf_len, ret_buf_len);
+		ret = controller_data_get(ip, block_id, record_id, buf, buf_len, ret_buf_len);
+	}
+
 
 exit:
 	return ret;
@@ -142,10 +149,16 @@ int sea_controller_write(struct sea_controller *controller, char *buf, int buf_l
         ret = sea_controller_write_local(controller, buf, buf_len, block_id, record_id);
      //   goto exit;
     //}
+	uint32_t ip;
 
-    ret = dht_list_set_data(controller, buf, buf_len, block_id, record_id);
+	ret = dht_list_get_free_node(&ip);
+	if (ret != 0) {
+		goto exit;
+	}
 
-//exit:
+	ret = controller_data_send(buf, buf_len, ip, block_id, record_id);
+
+exit:
 	return ret;
 }
 

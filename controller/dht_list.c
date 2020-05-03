@@ -198,6 +198,52 @@ int dht_list_get_nodes(struct sockaddr_in *sin, int num, struct sockaddr_in6 *si
     return 0;
 }
 
+static void get_data_callback(void *closure,
+         int event,
+         const unsigned char *info_hash,
+         const void *data, size_t data_len)
+{
+    uint32_t *ip = closure;
+    struct sockaddr_in *sin = (struct sockaddr_in *)data;
+    *ip = sin->sin_addr.s_addr;
+}
+
+int dht_list_get_free_node(uint32_t *ip)
+{
+    int ret = EINVAL;
+    struct sockaddr_in sin;
+    struct sockaddr_in6 sin6;
+    int num6 = 0;
+    int num4 = 1;
+
+    ret = dht_list_get_nodes(&sin, &num4, &sin6, &num6);
+    if (ret != 0) {
+        goto exit;
+    }
+    if (num4 != 0) {
+        ip = sin.sin_addr.s_addr;
+    }
+    ret = 0;
+
+exit:
+    return ret;
+}
+
+int dht_list_get_node(uint64_t block_id, uint32_t record_id, uint32_t *ip)
+{
+    int ret = EINVAL;
+    struct sockaddr_in sin;
+    struct sockaddr_in6 sin6;
+    int num6 = 1;
+    int num4 = 1;
+
+    // 通过block id , record id 生成hash 
+    dht_search(hash, 0, AF_INET, get_data_callback, ip);
+
+exit:
+    return ret;
+}
+
 int dht_list_init(/*int argc, char **argv*/int port, int node_list_len, char **node_list)
 {
     int i, rc, fd;
