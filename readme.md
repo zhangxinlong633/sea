@@ -6,3 +6,4 @@
 4. 支持全文查询，类似ElasticSearch
 5. 支持图操作，类似Neo4j, TigerGraph等
 
+
