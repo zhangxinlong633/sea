@@ -10,8 +10,6 @@ link_directories("/usr/local/lib")
 link_libraries(sea_block block_word)
 
 add_library(sea_controller SHARED
-        gossip_list.c
-        gossip_list.h
         phone_list.c
         phone_list.h
         controller.c
