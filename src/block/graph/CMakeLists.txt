@@ -4,7 +4,6 @@ project(graph)
 set(CMAKE_CXX_STANDARD 14)
 
 include_directories(.)
-add_subdirectory(test)
 link_directories("/usr/local/lib")
 link_libraries(sea_block)
 link_libraries(block_word)
