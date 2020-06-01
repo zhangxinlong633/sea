@@ -1,6 +1,6 @@
 #include "word.h"
 #include "md5.h"
-#include "../block_array/array.h"
+#include "../array/array.h"
 
 struct sea_word {
     struct col_array *array;

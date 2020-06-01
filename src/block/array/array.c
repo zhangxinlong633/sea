@@ -1,4 +1,4 @@
-#include "../include/public.h"
+#include "../../include/public.h"
 #include "array.h"
 
 struct col_array_hdr {

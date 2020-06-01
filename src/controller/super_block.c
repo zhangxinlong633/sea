@@ -1,5 +1,6 @@
 #include "super_block.h"
-#include "../block_word/md5.h"
+#include "../block/word/md5.h"
+#include "controller.h"
 
 struct controller_super_block {
 	char controller_name[32];

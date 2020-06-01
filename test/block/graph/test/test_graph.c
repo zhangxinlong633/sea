@@ -1,7 +1,7 @@
 
 #include <graph_data.h>
 #include "../../include/public.h"
-#include "../graph.h"
+#include "../include/"
 
 char dir[256] = "/Users/zhangxinlong/tmp/data";
 char db_name[256] = "graph";

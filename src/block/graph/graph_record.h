@@ -1,7 +1,7 @@
 #ifndef SEA_GRAPH_RECORD_H
 #define SEA_GRAPH_RECORD_H
 
-#include "../include/public.h"
+#include "../../include/public.h"
 
 struct graph_record;
 

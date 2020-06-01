@@ -1,4 +1,4 @@
-#include "../../../block_word/word.h"
+#include "../../src/block/word/word.h"
 
 #define COUNT 10000 * 10000 * 10
 

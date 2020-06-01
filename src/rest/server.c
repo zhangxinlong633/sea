@@ -330,7 +330,7 @@ void data_server()
     if (rv != 0) {
         fatal("cannot start inproc server", rv);
     }
-    return 0;
+    return;
 }
 
 int main(int argc, char **argv)

@@ -1,7 +1,7 @@
 #ifndef SEA_GRAPH_DATA_H
 #define SEA_GRAPH_DATA_H
 
-#include "../include/public.h"
+#include "../../include/public.h"
 
 int create_node_data(struct sea_block *block, struct node_info *node,
                      struct graph_attr_info *attr_info, uint16_t attr_count,

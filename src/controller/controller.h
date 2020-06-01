@@ -2,6 +2,7 @@
 #define __CONTROLLER_H_
 
 #include "../include/public.h"
+#include "../block/time/sea_block.h"
 struct sea_controller;
 
 struct sea_controller *sea_controller_create(char *dir);

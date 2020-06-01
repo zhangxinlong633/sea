@@ -1,4 +1,6 @@
-#include "../../../include/public.h"
+#include "../../src/include/public.h"
+#include "../../src/block/time/sea_block.h"
+
 
 #define COUNT 10000 * 10000
 char *dir = "/Users/zhangxinlong/tmp/block";

@@ -2,6 +2,7 @@
 #include "phone_list.h"
 #include "../include/public.h"
 #include "super_block.h"
+#include "controller.h"
 
 #define SEA_CONTROLLER_LOCAL_NODE 0
 #define DATA_DIR "/Users/zhangxinlong/tmp/controller"

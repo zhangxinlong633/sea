@@ -13,7 +13,7 @@ add_executable(bench_array_test
         array/bench_array.c)
 
 add_executable(bench_block_test
-        block/bench_block.c)
+        time/bench_block.c)
 
 add_executable(bench_graph_test
         graph/bench_graph.c)

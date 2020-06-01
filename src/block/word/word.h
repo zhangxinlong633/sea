@@ -1,7 +1,7 @@
 #ifndef SEA_WORD_H
 #define SEA_WORD_H
 
-#include "../include/public.h"
+#include "../../include/public.h"
 
 struct sea_word ;
 

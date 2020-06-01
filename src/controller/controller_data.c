@@ -13,7 +13,7 @@
 
 int client(uint32_t ip, struct data_server_hdr *hdr, struct data_server_hdr *recv_hdr, uint32_t *recv_hdr_len)
 {
-	const char url[256];
+	char url[256];
 
 	nng_socket sock;
 	int        rv;
@@ -24,23 +24,23 @@ int client(uint32_t ip, struct data_server_hdr *hdr, struct data_server_hdr *rec
 	snprintf(url, 256, "tcp://"IPADDR_FMT":%u", NIPQUAD(ip), 8889);
 
 	if ((rv = nng_req0_open(&sock)) != 0) {
-		fatal("nng_socket", rv);
+		printf("nng_socket, rv: %d", rv);
 	}
 	if ((rv = nng_dial(sock, url, NULL, 0)) != 0) {
-		fatal("nng_dial", rv);
+		printf("nng_dial, rv: %d", rv);
 	}
 	if ((rv = nng_send(sock, hdr, hdr->len, 0)) != 0) {
-		fatal("nng_send", rv);
+		printf("nng_send, rv: %d", rv);
 	}
 	if ((rv = nng_recv(sock, recv_hdr, recv_hdr_len, NNG_FLAG_ALLOC)) != 0) {
-		fatal("nng_recv", rv);
+		printf("nng_recv, rv: %d", rv);
 	}
 
 	nng_close(sock);
 	return (0);
 }
 
-uint32_t min(uint32_t a, uint32_t b) 
+static uint32_t min(uint32_t a, uint32_t b) 
 {
 	return a > b ? b : a;
 }

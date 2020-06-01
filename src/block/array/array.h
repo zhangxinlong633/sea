@@ -1,7 +1,7 @@
 #ifndef SEA_COL_DATA_H
 #define SEA_COL_DATA_H
 
-#include "../include/public.h"
+#include "../../include/public.h"
 
 #define VALUE_TYPE_ARR_MIN       1
 #define VALUE_TYPE_ARR_UINT8     1

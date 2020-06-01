@@ -18,7 +18,7 @@
 #include <signal.h>
 #include <sys/signal.h>
 
-#include "dht.h"
+#include "./dht/dht.h"
 
 #define MAX_BOOTSTRAP_NODES 20
 static struct sockaddr_storage bootstrap_nodes[MAX_BOOTSTRAP_NODES];
@@ -247,7 +247,7 @@ exit:
 int dht_list_init(/*int argc, char **argv*/int port, int node_list_len, char **node_list)
 {
     int i, rc, fd;
-    int s = -1, s6 = -1, port;
+    int s = -1, s6 = -1; 
     int have_id = 0;
     unsigned char myid[20];
     time_t tosleep = 0;

@@ -1,6 +1,6 @@
-#include "../include/public.h"
+#include "../../include/public.h"
 #include "graph.h"
-#include "../block_word/md5.h"
+#include "../word/md5.h"
 #include "graph_data.h"
 
 struct graph_db_conn {

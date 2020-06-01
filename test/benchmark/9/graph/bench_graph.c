@@ -1,4 +1,4 @@
-#include "../../../block_graph/graph.h"
+#include "../../src/block/graph/graph.h"
 
 char dir[256] = "/Users/zhangxinlong/tmp/data";
 char db_name[256] = "graph";

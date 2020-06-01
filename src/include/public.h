@@ -31,12 +31,6 @@
 #include <unistd.h>
 #include <errno.h>
 
-#include "../block/sea_block.h"
-#include "../block/sea_block_index.h"
-#include "../block/sea_block_data.h"
-#include "../block/sea_block_record.h"
-#include "../block/sea_block_offset.h"
-#include "../block/utils.h"
 #include "queue.h"
 #include "tree.h"
 #include "khash.h"

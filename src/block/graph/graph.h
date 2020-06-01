@@ -1,7 +1,7 @@
 #ifndef SEA_GRAPH_H
 #define SEA_GRAPH_H
 
-#include "../include/public.h"
+#include "../../include/public.h"
 
 struct node_info {
     /**

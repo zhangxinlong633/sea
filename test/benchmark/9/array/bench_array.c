@@ -1,5 +1,5 @@
-#include "../include/public.h"
-#include "../../../block_array/array.h"
+#include "../../src/include/public.h"
+#include "./
 
 #define COUNT 10000 * 10000 * 10
 
