@@ -1,6 +1,5 @@
-#include "../controller.h"
-#include "../../include/public.h"
-#include "../../block/public.h"
+#include "../../../src/controller/controller.h"
+#include "../../../src/include/public.h"
 
 void dump_data(void *data, int data_len)
 {
@@ -21,7 +20,7 @@ int main(int argc, char **argv)
 	sea_controller_init();
 	struct sea_controller *controller;
 
-	controller = sea_controller_create(2);
+	controller = sea_controller_create("~/tmp/controller");
 	if (controller == NULL) {
 		goto exit;
 	}

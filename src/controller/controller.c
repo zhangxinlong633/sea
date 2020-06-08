@@ -3,6 +3,7 @@
 #include "../include/public.h"
 #include "super_block.h"
 #include "controller.h"
+#include "controller_data.h"
 
 #define SEA_CONTROLLER_LOCAL_NODE 0
 #define DATA_DIR "/Users/zhangxinlong/tmp/controller"
@@ -148,6 +149,9 @@ int sea_controller_write(struct sea_controller *controller, char *buf, int buf_l
 
     //if ((has_free_block_id || block_id = generate_local_block_id()) && space > LIMIT) {
         ret = sea_controller_write_local(controller, buf, buf_len, block_id, record_id);
+		if (ret == 0) {
+			goto exit;
+		}
      //   goto exit;
     //}
 	uint32_t ip;

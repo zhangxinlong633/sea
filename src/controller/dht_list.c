@@ -17,6 +17,7 @@
 #include <netdb.h>
 #include <signal.h>
 #include <sys/signal.h>
+#include <pthread.h>
 
 #include "./dht/dht.h"
 
@@ -244,7 +245,21 @@ exit:
     return ret;
 }
 
+static void *dht_list_process()
+{
+	int port = 8888;
+	int node_list_len = 0;
+	char node_list[12][20] = {{"192.168.0.11"}};
+    __dht_list_init(port, node_list_len, node_list);
+} 
+
 int dht_list_init(/*int argc, char **argv*/int port, int node_list_len, char **node_list)
+{
+    pthread_t thread;
+    pthread_create(&thread, NULL, dht_list_process, NULL);
+}
+
+int __dht_list_init(int port, int node_list_len, char **node_list)
 {
     int i, rc, fd;
     int s = -1, s6 = -1; 
